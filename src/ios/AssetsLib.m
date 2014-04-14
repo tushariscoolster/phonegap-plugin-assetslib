@@ -33,8 +33,7 @@
 {
     NSInteger start=[options objectForKey:@"start"];
      NSInteger end=[options objectForKey:@"end"];
-     NSLog(@"Number first is %@", @(start));
-     NSLog(@"Number second is %@", @(end));
+ 
      
     
     if (self.assetsLibrary == nil) {
