@@ -31,8 +31,11 @@
 
 - (void)getAllPhotoThumbnails:(CDVInvokedUrlCommand*)command
 {
-    NSInteger *start=[options objectForKey:@"start"];
-     NSInteger *end=[options objectForKey:@"end"];
+    NSInteger start=[options objectForKey:@"start"];
+     NSInteger end=[options objectForKey:@"end"];
+     NSLog(@"Number first is %@", @(start))
+     NSLog(@"Number second is %@", @(end))
+     
     
     if (self.assetsLibrary == nil) {
         _assetsLibrary = [[ALAssetsLibrary alloc] init];
