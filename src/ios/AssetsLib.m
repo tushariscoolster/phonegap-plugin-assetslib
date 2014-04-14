@@ -115,8 +115,8 @@
         NSMutableDictionary* photos = [NSMutableDictionary dictionaryWithDictionary:@{}];
         NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
-        
-        for (int i=0; i<[self.assets count]; i++)
+         //for (int i=0; i<[self.assets count]; i++)
+        for (int i=0; i<5; i++)
         {
             ALAsset* asset = self.assets[i];
             NSString* url = [[asset valueForProperty:ALAssetPropertyAssetURL] absoluteString];
