@@ -51,7 +51,8 @@
         [self.assets removeAllObjects];
     }
     self.assetsCount = 0;
-    
+    self.start=start;
+    self.end=end;
     ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
         if (result) {
             [self.assets addObject:result];
@@ -110,7 +111,8 @@
 - (void)getAllPhotosComplete:(CDVInvokedUrlCommand*)command with:(NSString*)error
 {
     CDVPluginResult* pluginResult = nil;
-     
+       NSLog(@"start all complter:: %@",self.start);
+   NSLog(@"end all complter:: %@",self.end);
     if (error != nil && [error length] > 0)
     {   // Call error
         NSLog(@"Error occured for command.callbackId:%@, error:%@", command.callbackId, error);
