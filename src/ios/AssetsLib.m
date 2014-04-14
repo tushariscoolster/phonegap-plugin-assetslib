@@ -51,8 +51,8 @@
         [self.assets removeAllObjects];
     }
     self.assetsCount = 0;
-    self.start = start;
-    self.end = end;
+    self.start = 0;
+    self.end = 0;
     ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
         if (result) {
             [self.assets addObject:result];
