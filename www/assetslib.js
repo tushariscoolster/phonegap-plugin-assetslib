@@ -1,7 +1,7 @@
 var assetslib = {
 	
 	getAllPhotoThumbnails:function(startval,endval,successCallback, errorCallback) {
-		cordova.exec(successCallback, errorCallback, "AssetsLib", "getAllPhotoThumbnails", [{start: startval, end : endval}]);
+		cordova.exec(successCallback, errorCallback, "AssetsLib", "getAllPhotoThumbnails", [startval, endval]);
 	},
 
 	getFullScreenPhotos:function(urlList, successCallback, errorCallback) {
