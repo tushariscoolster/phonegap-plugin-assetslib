@@ -31,6 +31,9 @@
 
 - (void)getAllPhotoThumbnails:(CDVInvokedUrlCommand*)command
 {
+    NSInteger *start=[options objectForKey:@"start"];
+     NSInteger *end=[options objectForKey:@"end"];
+    
     if (self.assetsLibrary == nil) {
         _assetsLibrary = [[ALAssetsLibrary alloc] init];
     }
