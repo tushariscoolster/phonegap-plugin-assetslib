@@ -28,7 +28,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // getAllPhotoThumbnails
-
+ NSString *start="1";
+ NSString *end="2" ;
 - (void)getAllPhotoThumbnails:(CDVInvokedUrlCommand*)command
 {
    NSString *start = [command.arguments objectAtIndex:0];
@@ -110,7 +111,8 @@
 - (void)getAllPhotosComplete:(CDVInvokedUrlCommand*)command with:(NSString*)error
 {
     CDVPluginResult* pluginResult = nil;
-
+  NSLog(@"start in app:: %@",start);
+   NSLog(@"end View in app:: %@",end);
     if (error != nil && [error length] > 0)
     {   // Call error
         NSLog(@"Error occured for command.callbackId:%@, error:%@", command.callbackId, error);
