@@ -109,10 +109,14 @@
 
 - (void)getAllPhotosComplete:(CDVInvokedUrlCommand*)command with:(NSString*)error
 {
-     NSString *start = [command.arguments objectAtIndex:0];
+       NSString *start = [command.arguments objectAtIndex:0];
     NSString *end = [command.arguments objectAtIndex:1];
     NSLog(@"start big:: %@",start);
     NSLog(@"end View big:: %@",end);
+    
+    
+    int startval = [start intValue];
+    int endval = [end intValue];
    
     CDVPluginResult* pluginResult = nil;
     if (error != nil && [error length] > 0)
@@ -126,7 +130,7 @@
         NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
          //for (int i=0; i<[self.assets count]; i++)
-        for (int i=0; i<5; i++)
+        for (int i=startval; i<endval; i++)
         {
             ALAsset* asset = self.assets[i];
             NSString* url = [[asset valueForProperty:ALAssetPropertyAssetURL] absoluteString];
