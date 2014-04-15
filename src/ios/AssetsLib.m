@@ -107,7 +107,7 @@
     [self.assetsLibrary enumerateGroupsWithTypes:groupTypes usingBlock:listGroupBlock failureBlock:failureBlock];
 }
 
-- (void)getAllPhotosComplete:(CDVInvokedUrlCommand*)command with:(NSString*)error
+- (void)getAllPhotosComplete:(CDVInvokedUrlCommand*)command with:(NSString*)error withBlock:(NSString*)start 
 {
     CDVPluginResult* pluginResult = nil;
     if (error != nil && [error length] > 0)
