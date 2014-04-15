@@ -132,6 +132,8 @@
          //for (int i=0; i<[self.assets count]; i++)
         for (int i=startval; i<endval; i++)
         {
+           if(i<[self.assets count])
+           {
             ALAsset* asset = self.assets[i];
             NSString* url = [[asset valueForProperty:ALAssetPropertyAssetURL] absoluteString];
             NSString* date = [dateFormatter stringFromDate:[asset valueForProperty:ALAssetPropertyDate]];
@@ -149,6 +151,7 @@
             NSMutableDictionary* photometa = [self getImageMeta:asset];
             [photometa addEntriesFromDictionary:photo];
             [photos setObject:photometa forKey:photometa[@"url"]];
+           }
         }
         NSArray* photoMsg = [photos allValues];
         NSLog(@"Sending to phonegap application message with %lu photos",(unsigned long)[photoMsg count]);
