@@ -109,6 +109,11 @@
 
 - (void)getAllPhotosComplete:(CDVInvokedUrlCommand*)command with:(NSString*)error
 {
+     NSString *start = [command.arguments objectAtIndex:0];
+    NSString *end = [command.arguments objectAtIndex:1];
+    NSLog(@"start big:: %@",start);
+    NSLog(@"end View big:: %@",end);
+   
     CDVPluginResult* pluginResult = nil;
     if (error != nil && [error length] > 0)
     {   // Call error
