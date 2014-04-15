@@ -58,7 +58,7 @@
             if ([self.assets count] == self.assetsCount)
             {
                 NSLog(@"Got all %d photos",self.assetsCount);
-                [self getAllPhotosComplete:command with:nil];
+                [self getAllPhotosComplete:command with:nil withBlock:start];
             }
         }
     };
