@@ -186,7 +186,8 @@
             [self.assetsLibrary assetForURL:url resultBlock: ^(ALAsset *asset){
                 ALAssetRepresentation* representation = [asset defaultRepresentation];
                 CGImageRef imageRef = [representation fullScreenImage];
-                UIImage* img = [UIImage imageWithCGImage:imageRef];
+               UIImage* img = [resizedImage resizedImageByMagick: @"320x320#"];
+                NSString* base64encoded = [UIImageJPEGRepresentation(img,0.5) 
                 NSString* base64encoded = [UIImagePNGRepresentation(img) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
                 NSDictionary* photo = @{
                                         @"url": urlString,
