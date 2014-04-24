@@ -55,18 +55,21 @@ navigator.assetslib.getFullScreenPhotos(urlList, successCallback, errorCallback)
 To get all iOS library thumbnails data use getAllPhotoThumbnails:
 
 ```javascript
-getAllPhotoThumbnails:function() {
-  if (navigator.assetslib) {
-    navigator.assetslib.getAllPhotoThumbnails(this.onGetAllPhotoThumbnailsSuccess, this.onGetAllPhotoThumbnailsError);
-  }
-},
-onGetAllPhotoThumbnailsSuccess:function(data){
-  this.allThumbnails = data;
-  alert("iOS onGetAllPhotosSuccess\n" + data.length);
-},
-onGetAllPhotoThumbnailsError:function(error){
-  console.error("iOS onGetAllPhotoThumbnailsError > " + error);
-}
+   navigator.assetslib.getAllPhotoThumbnails("0", "10", function (data) {
+
+                            angular.forEach(data, function (value, key) {
+                                $scope.galleryimage.push(value)
+                            })
+                            $scope.$apply()
+
+                            $scope.$broadcast('scroll.infiniteScrollComplete');
+                            $.event.trigger("onGetAllPhotoThumbnailsSuccess");
+                            LoaderService.hide()
+
+                        },
+                        function () {
+
+                        });
 ```
 
 
