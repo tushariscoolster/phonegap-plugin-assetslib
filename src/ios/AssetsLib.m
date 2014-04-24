@@ -1,17 +1,22 @@
 //
 //  AssetsLib.m
 //
-//  Created by glowmar on 12/27/13.
+//  Created by Tushar on 12/27/13.
 //
 //
 
 #import "AssetsLib.h"
+#import "UIImage+ResizeMagick.h"
 #import "AssetsLibrary/ALAssetsLibrary.h"
 #import "AssetsLibrary/ALAssetsFilter.h"
 #import "AssetsLibrary/ALAssetsGroup.h"
 #import "AssetsLibrary/ALAsset.h"
 #import "AssetsLibrary/ALAssetRepresentation.h"
+@interface UIImage (Extras)
 
+- (UIImage*)imageByScalingAndCroppingForSize:(CGSize)targetSize;
+
+@end
 
 @interface AssetsLib ()
 
@@ -28,6 +33,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // getAllPhotoThumbnails
+
+
 
 - (void)getAllPhotoThumbnails:(CDVInvokedUrlCommand*)command
 {
@@ -53,6 +60,7 @@
     self.assetsCount = 0;
  
     ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
+         [self.commandDelegate runInBackground:^{
         if (result) {
             [self.assets addObject:result];
             if ([self.assets count] == self.assetsCount)
@@ -61,11 +69,12 @@
                 [self getAllPhotosComplete:command with:nil];
             }
         }
+         }];
     };
     
     // setup our failure view controller in case enumerateGroupsWithTypes fails
     ALAssetsLibraryAccessFailureBlock failureBlock = ^(NSError *error) {
-        
+         [self.commandDelegate runInBackground:^{
         NSString* errorMessage = nil;
         switch ([error code]) {
             case ALAssetsLibraryAccessUserDeniedError:
@@ -78,9 +87,11 @@
         }
         NSLog(@"Problem reading assets library %@",errorMessage);
         [self getAllPhotosComplete:command with:errorMessage];
+         }];
     };
     
     ALAssetsLibraryGroupsEnumerationResultsBlock listGroupBlock = ^(ALAssetsGroup *group, BOOL *stop) {
+       
         ALAssetsFilter *onlyPhotosFilter = [ALAssetsFilter allPhotos];
         [group setAssetsFilter:onlyPhotosFilter];
         // NSLog(@"AssetsLib::getAllPhotos::listGroupBlock > %@ (%d)   type: %@    url: %@",[group valueForProperty:ALAssetsGroupPropertyName],[group numberOfAssets],[group valueForProperty:ALAssetsGroupPropertyType],[group valueForProperty:ALAssetsGroupPropertyURL]);
@@ -100,11 +111,13 @@
                 [group enumerateAssetsUsingBlock:assetsEnumerationBlock];
             }
         }
+        
     };
-    
+      [self.commandDelegate runInBackground:^{
     // enumerate only photos
     NSUInteger groupTypes = ALAssetsGroupAll; // ALAssetsGroupAlbum | ALAssetsGroupEvent | ALAssetsGroupFaces | ALAssetsGroupSavedPhotos | ALAssetsGroupPhotoStream;
     [self.assetsLibrary enumerateGroupsWithTypes:groupTypes usingBlock:listGroupBlock failureBlock:failureBlock];
+      }];
 }
 
 - (void)getAllPhotosComplete:(CDVInvokedUrlCommand*)command with:(NSString*)error
@@ -117,7 +130,7 @@
     
     int startval = [start intValue];
     int endval = [end intValue];
-   
+    [self.commandDelegate runInBackground:^{
     CDVPluginResult* pluginResult = nil;
     if (error != nil && [error length] > 0)
     {   // Call error
@@ -138,14 +151,14 @@
             NSString* url = [[asset valueForProperty:ALAssetPropertyAssetURL] absoluteString];
             NSString* date = [dateFormatter stringFromDate:[asset valueForProperty:ALAssetPropertyDate]];
             
-            CGImageRef thumbnailImageRef = [asset thumbnail];
-            UIImage* thumbnail = [UIImage imageWithCGImage:thumbnailImageRef];
-            NSString* base64encoded = [UIImagePNGRepresentation(thumbnail) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+            //CGImageRef thumbnailImageRef = [asset thumbnail];
+            //UIImage* thumbnail = [UIImage imageWithCGImage:thumbnailImageRef];
+           // NSString* base64encoded = [UIImagePNGRepresentation(thumbnail) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
             
             NSDictionary* photo = @{
                                     @"url": url,
-                                    @"date": date,
-                                    @"base64encoded": base64encoded
+                                    @"date": date
+                                   // @"base64encoded": base64encoded
                                   };
             //NSLog(@"%d: %@", i, photo[@"url"]);
             NSMutableDictionary* photometa = [self getImageMeta:asset];
@@ -159,11 +172,14 @@
     }
     
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // getFullScreenPhotos
+
+
 
 - (void)getFullScreenPhotos:(CDVInvokedUrlCommand*)command
 {
@@ -186,9 +202,9 @@
             [self.assetsLibrary assetForURL:url resultBlock: ^(ALAsset *asset){
                 ALAssetRepresentation* representation = [asset defaultRepresentation];
                 CGImageRef imageRef = [representation fullScreenImage];
-               UIImage* img = [resizedImage resizedImageByMagick: @"320x320#"];
-                NSString* base64encoded = [UIImageJPEGRepresentation(img,0.5) 
-                NSString* base64encoded = [UIImagePNGRepresentation(img) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+                UIImage* resizedImage = [UIImage imageWithCGImage:imageRef];
+                UIImage* img = [resizedImage resizedImageByMagick: @"320x320#"];
+                NSString* base64encoded = [UIImageJPEGRepresentation(img,0.5) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
                 NSDictionary* photo = @{
                                         @"url": urlString,
                                         @"base64encoded": base64encoded
