@@ -57,14 +57,8 @@ To get all iOS library thumbnails data use getAllPhotoThumbnails:
 ```javascript
    navigator.assetslib.getAllPhotoThumbnails("0", "10", function (data) {
 
-                            angular.forEach(data, function (value, key) {
-                                $scope.galleryimage.push(value)
-                            })
-                            $scope.$apply()
-
-                            $scope.$broadcast('scroll.infiniteScrollComplete');
-                            $.event.trigger("onGetAllPhotoThumbnailsSuccess");
-                            LoaderService.hide()
+                         
+                        
 
                         },
                         function () {
